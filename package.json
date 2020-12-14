@@ -1,0 +1,31 @@
+{
+  "name": "jarvis_add-milestone-to-issue",
+  "version": "1.0.0",
+  "private": true,
+  "description": "jarvis - adds a milestone to an issue",
+  "author": "Zefau <zefau@mailbox.org>",
+  "license": "ISC",
+  "repository": "https://github.com/Zefau/jarvis_add-milestone-to-issue.git",
+  "homepage": "https://github.com/Zefau/jarvis_add-milestone-to-issue",
+  "bugs": "https://github.com/Zefau/jarvis_add-milestone-to-issue/issues",
+  "keywords": [
+    "probot",
+    "github",
+    "probot-app"
+  ],
+  "scripts": {
+    "start": "probot run ./index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "probot": "^10.9.3"
+  },
+  "devDependencies": {
+    "jest": "^26.4.0",
+    "nock": "^13.0.4",
+    "smee-client": "^1.1.0"
+  },
+  "engines": {
+    "node": ">= 10.13.0"
+  }
+}
