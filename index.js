@@ -1,37 +1,18 @@
 
 module.exports = ({ app }) => {
 	app.log.info('Yay, the app was loaded!');
-
-	app.on('issues.opened', async (context) => {
+  
+	app.on([ 'issues.labeled' ], async (context) => {
 		const { payload, octokit } = context;
-		const config = await context.config('config.yml', { milestoneId: 9 });
-		app.log.info(config);
-		
-		/*
-		* Fetch the issue again to double-check that it has no labels.
-		* Sometimes, when an issue is opened with labels, the initial
-		* webhook event contains no labels.
-		* https://github.com/eslint/eslint-github-bot/issues/38
-		*/
-		let issue = null;
-		if (!payload.issue || payload.issue.labels.length === 0) {
-			issue = await octokit.issues.get(context.issue()).then((res) => res.data);
-			
-			if (!issue || issue.labels.length === 0) {
-				return false;
-			}
-		}
-		else {
-			issue = payload.issue;
-		}
-		
+    const config = await context.config('./addMilestoneToIssueConfig.yml', { milestoneId: 1, label: 'enhancement' });
+    app.log.info(config);
+    
 		//
-		const labels = payload.issue.labels.map(label => label.name);
-		if (labels.indexOf('feature') > -1) {
+		if (payload.label.name.toLowerCase() === config.label.toLowerCase() && !payload.issue.milestone) {
 			
 			// assign milestone
 			octokit.issues.update(context.issue({
-				'milestone': config.milestoneId
+        'milestone': config.milestoneId
 			}));
 			
 			const issueComment = context.issue({
